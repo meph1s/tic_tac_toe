@@ -49,6 +49,14 @@ def main():
 
         game.make_move(row, column, current_player)
         game.display()
+        # После каждого хода надо делать проверку на победу и на ничью.
+        if game.check_win(current_player):
+            print(f'Победили {current_player}!')
+            running = False
+        elif game.is_board_full():
+            print('Ничья!')
+            running = False
+            
         current_player = 'O' if current_player == 'X' else 'X'
 
 
