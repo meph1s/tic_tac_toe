@@ -54,3 +54,11 @@ class Board:
             return True
 
         return False
+    
+
+    #Этот метод будет добавлять в файл results.txt итоги игры
+    def save_result(self, result):
+        self.result = result
+        self.file = open('results.txt', 'a', encoding='utf-8')
+        file.write(result)
+        file.close()

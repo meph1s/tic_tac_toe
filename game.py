@@ -51,10 +51,14 @@ def main():
         game.display()
         # После каждого хода надо делать проверку на победу и на ничью.
         if game.check_win(current_player):
-            print(f'Победили {current_player}!')
+            result = f'Победили {current_player}!'
+            print(result)
+            self.save_result(result)            
             running = False
         elif game.is_board_full():
+            result = 'Ничья!'
             print('Ничья!')
+            self.save_result(result)
             running = False
             
         current_player = 'O' if current_player == 'X' else 'X'
