@@ -60,5 +60,5 @@ class Board:
     def save_result(self, result):
         self.result = result
         file = open('results.txt', 'a', encoding='utf-8')
-        file.write(result)
+        file.write(result + '\n')
         file.close()
