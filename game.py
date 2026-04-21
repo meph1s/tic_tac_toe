@@ -1,26 +1,56 @@
+# game.py
+
 from gameparts import Board
-# Из файла exceptions.py, который лежит в пакете gameparts,
-# импортируется класс FieldIndexError.
-from gameparts.exceptions import FieldIndexError
+# Добавился ещё один импорт - исключение CellOccupiedError.
+from gameparts.exceptions import CellOccupiedError, FieldIndexError
 
 
 def main():
     game = Board()
-    game.display()
-    # Пользователь вводит номер строки.
-    row = int(input('Введите номер строки: '))
-    # Если введённое значение меньше нуля или больше или равно
-    # field_size (это значение равно трём, оно хранится в модуле
-    # parts.py)...
-    if row < 0 or row >= game.field_size:
-        # ...выбросить исключение FieldIndexError.
-        raise FieldIndexError
-    column = int(input('Введите номер столбца: '))
-    if column < 0 or column >= game.field_size:
-        raise FieldIndexError    
-    game.make_move(row, column, 'X')
-    print('Ход сделан!')
+    current_player = 'X'
+    running = True
     game.display()
 
+    while running:
+
+        print(f'Ход делают {current_player}')
+
+        # Запускается бесконечный цикл.
+        while True:
+            try:
+                row = int(input('Введите номер строки: '))
+                if row < 0 or row >= game.field_size:
+                    raise FieldIndexError
+                column = int(input('Введите номер столбца: '))
+                if column < 0 or column >= game.field_size:
+                    raise FieldIndexError
+                if game.board[row][column] != ' ':
+                    # Вот тут выбрасывается новое исключение.
+                    raise CellOccupiedError
+            except FieldIndexError:
+                print(
+                    'Значение должно быть неотрицательным и меньше '
+                    f'{game.field_size}.'
+                )
+                print('Введите значения для строки и столбца заново.')
+                continue
+            except CellOccupiedError:
+                print('Ячейка занята')
+                print('Введите другие координаты.')
+                continue
+            except ValueError:
+                print('Буквы вводить нельзя. Только числа.')
+                print('Введите значения для строки и столбца заново.')
+                continue
+            except Exception as e:
+                print(f'Возникла ошибка: {e}')
+            else:
+                break
+
+        game.make_move(row, column, current_player)
+        game.display()
+        current_player = 'O' if current_player == 'X' else 'X'
+
+
 if __name__ == '__main__':
-    main() 
+    main()
